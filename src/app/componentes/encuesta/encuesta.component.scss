@@ -1,0 +1,131 @@
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 94vh;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #fff;
+}
+
+.titulo {
+  font-size: 2.5rem;
+  color: #00c6ff;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 12px rgba(0, 198, 255, 0.6);
+}
+
+.encuesta-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.formulario {
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(0, 198, 255, 0.3);
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-family: 'Segoe UI', sans-serif;
+  color: #fff;
+}
+
+.formulario label {
+  font-weight: bold;
+  color: #00c6ff;
+}
+
+.formulario input,
+.formulario textarea {
+  padding: 0.5rem;
+  border: 1px solid #00c6ff;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.formulario input[type="checkbox"] {
+  margin-right: 0.5rem;
+  accent-color: #00c6ff;
+}
+
+.error {
+  color: #ff6b6b;
+  font-size: 0.85rem;
+}
+
+.btn-enviar {
+  background-color: #00c6ff;
+  color: #fff;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-enviar:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+}
+
+.btn-enviar:hover:not(:disabled) {
+  background-color: #009fd4;
+}
+
+.rango-valor {
+  color: #00c6ff;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.formulario select {
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #00c6ff;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+select {
+  background-color: #222;
+  color: #eee;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #00c6ff;
+  appearance: none;
+}
+
+select option {
+  background-color: #222;
+  color: #eee;
+}
+
+.mensaje {
+  margin: 10px auto;
+  width: 500px;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.exito {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}

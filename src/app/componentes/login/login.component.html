@@ -1,0 +1,19 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <h2>Iniciar sesión</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <input type="email" placeholder="Email" formControlName="email" />
+      <input type="password" placeholder="Contraseña" formControlName="password" />
+      <button type="submit">Ingresar</button>
+    </form>
+
+    <div style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center;">
+      <button type="button" (click)="cargarUsuarioRapido('admin1@admin.com', '123456')">Admin</button>
+      <button type="button" (click)="cargarUsuarioRapido('colomondani1@gmail.com', '123456')">Agus</button>
+    </div>
+
+    <p class="mensaje" *ngIf="mensaje">{{ mensaje }}</p>
+    <a class="link" routerLink="/registro">Registrarse</a>
+  </div>
+</div>

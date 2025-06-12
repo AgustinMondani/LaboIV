@@ -1,0 +1,33 @@
+<div class="quien-soy-container">
+  <h2 class="titulo">¿Quién soy?</h2>
+
+  <div class="contenido">
+    <div class="foto-container" *ngIf="fotoPerfilUrl">
+      <img [src]="fotoPerfilUrl" alt="Foto de perfil" class="foto-perfil" />
+    </div>
+
+    <div class="info-personal">
+      <p class="descripcion">
+        ¡Hola! Soy <strong>Agustín Mondani</strong>, estudiante de la Tecnicatura Universitaria en Programación en la UTN.
+      </p>
+      <p><strong>DNI:</strong> 42432238</p>
+      <p><strong>Legajo:</strong> 114616</p>
+      <p><strong>Email:</strong> a.mondani&#64;hotmail.com</p>
+    </div>
+  </div>
+
+  <div class="juego">
+    <h3 class="subtitulo">Mi juego: Wordle</h3>
+    <p class="descripcion">
+      El juego que desarrollé se basa en el famoso "Wordle". El objetivo es adivinar una palabra secreta de cinco letras en un máximo de seis intentos. Luego de cada intento, el juego brinda pistas:
+    </p>
+    <ul class="descripcion">
+      <li>🟩 Verde: la letra está en la palabra y en la posición correcta.</li>
+      <li>🟨 Amarillo: la letra está en la palabra pero en una posición diferente.</li>
+      <li>⬜ Gris: la letra no está en la palabra.</li>
+    </ul>
+    <p class="descripcion">
+      El jugador debe usar la lógica y su conocimiento del idioma para descubrir la palabra oculta. ¡Es un desafío entretenido que pone a prueba tu vocabulario!
+    </p>
+  </div>
+</div>

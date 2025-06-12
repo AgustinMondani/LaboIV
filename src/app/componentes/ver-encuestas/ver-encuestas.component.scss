@@ -1,0 +1,67 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 94vh;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+  padding: 2rem;
+}
+
+h2 {
+  font-size: 2.5rem;
+  color: #00c6ff;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 12px rgba(0, 198, 255, 0.6);
+}
+
+.error {
+  color: #ff6b6b;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  background-color: rgba(255, 0, 0, 0.1);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ff6b6b;
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+.encuestas-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.encuesta-card {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  width: 280px;
+  box-shadow: 0 0 15px rgba(0, 198, 255, 0.2);
+  transition: transform 0.3s ease;
+  border: 1px solid rgba(0, 198, 255, 0.2);
+}
+
+
+.encuesta-card h3 {
+  font-size: 1.5rem;
+  color: #00c6ff;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 8px rgba(0, 198, 255, 0.5);
+}
+
+.encuesta-card p {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}

@@ -1,0 +1,26 @@
+<h2 class="titulo">WORDLE</h2>
+
+<div class="tablero">
+  <div *ngFor="let fila of [].constructor(maxIntentos); let i = index" class="fila">
+    <div *ngFor="let col of [].constructor(5); let j = index" 
+         class="celda" 
+         [ngClass]="obtenerColor(i, j)">
+      {{ obtenerLetra(i, j) }}
+    </div>
+  </div>
+</div>
+
+<p class="puntaje">Puntaje: <strong>{{ puntaje }}</strong> | Ronda {{ rondaActual + 1 }} / 2</p>
+
+<div class="acciones" *ngIf="!juegoFinalizado">
+  <input [(ngModel)]="intentoActual"
+         maxlength="5"
+         [disabled]="juegoTerminado"
+         (keyup.enter)="enviarIntento()"
+         placeholder="Adiviná la palabra" />
+  <button (click)="enviarIntento()" [disabled]="juegoTerminado">Enviar</button>
+</div>
+
+<p class="mensaje">{{ mensaje }}</p>
+
+<button *ngIf="juegoFinalizado" (click)="reiniciarTodo()">Reiniciar Juego</button>

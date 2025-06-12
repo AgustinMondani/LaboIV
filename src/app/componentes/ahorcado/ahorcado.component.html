@@ -1,0 +1,26 @@
+<div class="ahorcado-container">
+  <h2>Ahorcado</h2>
+
+  <div class="contenido">
+    <div class="dibujo">
+      <pre *ngFor="let linea of dibujoAhorcado">{{ linea }}</pre>
+    </div>
+
+    <div class="juego">
+      <p class="palabra">{{ obtenerPalabraMostrada() }}</p>
+
+      <div class="teclado">
+        <button 
+          *ngFor="let letra of letras" 
+          (click)="presionarLetra(letra)" 
+          [disabled]="letrasAdivinadas.includes(letra) || letrasIncorrectas.includes(letra)">
+          {{ letra }}
+        </button>
+      </div>
+      <p>Intentos restantes: {{ maxIntentos - letrasIncorrectas.length }}</p>
+      <p class="mensaje">{{ mensaje }}</p>
+
+      <button *ngIf="juegoTerminado" (click)="reiniciarJuego()">Reiniciar</button>
+    </div>
+  </div>
+</div>

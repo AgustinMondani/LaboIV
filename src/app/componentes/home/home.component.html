@@ -1,0 +1,67 @@
+<div class="top-actions">
+  <div class="chat" (click)="irAChat()">
+    <img src="https://dnajbskfruaklvmnchzv.supabase.co/storage/v1/object/public/assets//chat.png" alt="Chat" />
+  </div>
+
+  <div class="extra-buttons">
+    <button class="boton-extra" (click)="irAEncuesta()">IR A ENCUESTA</button>
+    <button class="boton-extra" (click)="irAQuienSoy()">¿QUIÉN SOY?</button>
+  </div>
+
+  <div class="ver-encuestas" (click)="irAVerEncuestas()">
+    <img src="https://dnajbskfruaklvmnchzv.supabase.co/storage/v1/object/public/assets//ver-encuesta.png" alt="Ver Encuestas" />
+  </div>
+</div>
+
+<div class="home-main">
+  <div class="juegos-cards">
+    <div class="card" (click)="irAJuego('/juegos/ahorcado')" title="Ahorcado">
+      <img src="https://dnajbskfruaklvmnchzv.supabase.co/storage/v1/object/public/assets//ahorcados.png" alt="Ahorcado" />
+      <span>Ahorcado</span>
+    </div>
+    <div class="card" (click)="irAJuego('/juegos/mayor-menor')" title="Mayor o Menor">
+      <img src="https://dnajbskfruaklvmnchzv.supabase.co/storage/v1/object/public/assets//mayormenor.png" alt="Mayor o Menor" />
+      <span>Mayor o Menor</span>
+    </div>
+    <div class="card" (click)="irAJuego('/juegos/preguntados')" title="Preguntados">
+      <img src="https://dnajbskfruaklvmnchzv.supabase.co/storage/v1/object/public/assets//preguntado.png" alt="Preguntados" />
+      <span>Preguntados</span>
+    </div>
+    <div class="card" (click)="irAJuego('/juegos/wordle')" title="Wordle">
+      <img src="https://dnajbskfruaklvmnchzv.supabase.co/storage/v1/object/public/assets//wordle.png" alt="Wordle" />
+      <span>Wordle</span>
+    </div>
+  </div>
+
+  <div class="tabla-puntajes">
+    <h3>PUNTAJES</h3>
+
+    <div class="nav-ranking">
+      <button (click)="filtrarPorJuego('Wordle')" class="boton-ranking">Wordle</button>
+      <button (click)="filtrarPorJuego('Preguntados')" class="boton-ranking">Preguntados</button>
+      <button (click)="filtrarPorJuego('Ahorcado')" class="boton-ranking">Ahorcado</button>
+      <button (click)="filtrarPorJuego('Mayor menor')" class="boton-ranking">Mayor o Menor</button>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white border">
+        <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+          <tr>
+            <th class="py-3 px-6 text-left">Nombre</th>
+            <th class="py-3 px-6 text-left">Email</th>
+            <th class="py-3 px-6 text-left">Puntaje</th>
+            <th class="py-3 px-6 text-left">Fecha</th>
+          </tr>
+        </thead>
+        <tbody class="text-gray-700 text-sm font-light">
+          <tr *ngFor="let p of puntajes" class="border-b border-gray-200 hover:bg-gray-100">
+            <td class="py-3 px-6 text-left">{{ p.nombre }}</td>
+            <td class="py-3 px-6 text-left">{{ p.email }}</td>
+            <td class="py-3 px-6 text-left font-bold">{{ p.puntaje }}</td>
+            <td class="py-3 px-6 text-left">{{ p.fecha | date:'shortDate' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

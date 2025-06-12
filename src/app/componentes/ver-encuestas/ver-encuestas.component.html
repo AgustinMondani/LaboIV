@@ -1,0 +1,21 @@
+<div *ngIf="cargando">
+  <p>Cargando encuestas...</p>
+</div>
+
+<div *ngIf="mensajeError">
+  <p class="error">{{ mensajeError }}</p>
+</div>
+
+<div class="encuestas-grid" *ngIf="!cargando && !mensajeError">
+  <div *ngIf="encuestas.length === 0">
+    <p>No hay encuestas para mostrar.</p>
+  </div>
+
+  <div *ngFor="let e of encuestas" class="encuesta-card">
+    <h3>{{ e.nombre }}</h3>
+    <p><strong>Edad:</strong> {{ e.edad }}</p>
+    <p><strong>Le gustó el juego:</strong> {{ e.gustoJuego ? 'Sí' : 'No' }}</p>
+    <p><strong>Diversión:</strong> {{ e.diversion }}</p>
+    <p><strong>Dificultad:</strong> {{ e.dificultad }}</p>
+  </div>
+</div>

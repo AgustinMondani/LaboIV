@@ -1,0 +1,17 @@
+<div class="contenedor-juego">
+    <h2 class="titulo-juego">Mayor o Menor</h2>
+
+    <div *ngIf="currentCard" class="seccion-juego">
+        <img [src]="currentCard.image" alt="Carta actual" class="imagen-carta">
+
+        <div class="botonera">
+            <button (click)="guess(true)" class="boton boton-mayor">MAYOR</button>
+            <button (click)="guess(false)" class="boton boton-menor">MENOR</button>
+        </div>
+
+        <p class="puntaje">Puntaje: <strong>{{ score }}</strong></p>
+        <p class="restantes">Cartas restantes: {{ remaining }}</p>
+        <p class="resultado">{{ result }}</p>
+    </div>
+    <button (click)="iniciarJuego()" class="boton boton-reiniciar">REINICIAR</button>
+</div>

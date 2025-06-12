@@ -1,0 +1,37 @@
+<h2 *ngIf="!cargando" class="titulo-juego">PREGUNTADOS</h2>
+
+<div class="contenedor-juego">
+
+  <div *ngIf="cargando">
+    <p class="titulo-juego">Cargando preguntas...</p>
+  </div>
+
+  <div *ngIf="!cargando && !juegoFinalizado && pregunta" class="seccion-juego">
+    
+    <img star [src]="pregunta.imagen" alt="Personaje" class="imagen-pregunta" />
+
+    <div class=" imagen-pregunta">
+      <p class="puntaje">Puntaje: {{ puntaje }} / {{ totalPreguntas }}</p>
+    </div>
+
+    <div class="opciones-grid">
+      <button *ngFor="let opcion of pregunta.opciones" class="boton-opcion" (click)="elegir(opcion)"
+        [disabled]="seleccion !== ''" [ngClass]="{
+          correcto: opcion === pregunta.correcta && seleccion !== '',
+          incorrecto: opcion === seleccion && opcion !== pregunta.correcta
+        }">
+        {{ opcion }}
+      </button>
+    </div>
+
+    <button class="boton boton-reiniciar" (click)="siguiente()" [disabled]="!seleccion">
+      Siguiente
+    </button>
+  </div>
+
+  <div *ngIf="juegoFinalizado" class="seccion-juego">
+    <h2 class="resultado">Juego terminado</h2>
+    <p class="resultado">Respondiste {{ puntaje }} preguntas correctas de {{ totalPreguntas }}</p>
+    <button class="boton boton-reiniciar" (click)="reiniciar()">Jugar de nuevo</button>
+  </div>
+</div>

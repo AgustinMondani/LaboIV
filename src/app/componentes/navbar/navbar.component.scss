@@ -1,0 +1,27 @@
+.navbar {
+  max-height: 6vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  color: aliceblue;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 10px rgba(0 0 0 / 0.4);
+  background-color: #203a43;
+font-family:'Times New Roman', Times, serif;
+}
+
+.btn-logout {
+  background: #00c6ff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-logout:hover {
+  background: #0072ff;
+}
