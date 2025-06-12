@@ -1,59 +1,63 @@
-# SalaDeJuegos
+# 🎮 Sala de Juegos - UTN
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.9.
+Bienvenido/a a **Sala de Juegos**, una aplicación desarrollada con Angular como parte de la materia *Laboratorio 2* (UTN - 2025).
 
-## Development server
+---
 
-To start a local development server, run:
+## 🚀 Tecnologías Utilizadas
 
-```bash
-ng serve
-```
+- **Angular** (v16+)
+- **Ionic Framework**
+- **Firebase** ( Hosting)
+- **Supabase** ( Auth, Storage)
+- **TypeScript / HTML / SCSS**
+- **Deck of Cards API** (para el juego Mayor o Menor)
+- **The Simpsons Quote API** (para el juego Preguntados)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 🧩 Funcionalidades
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### 🟢 Login / Registro
+- Autenticación con Supabase.
+- Registro de nuevos usuarios con email y nombre.
+- Persistencia de sesión.
 
-```bash
-ng generate component component-name
-```
+### 🧠 Juegos Disponibles
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+#### 📈 Mayor o Menor
+- Adiviná si la siguiente carta será mayor o menor.
+- API externa de cartas (deckofcardsapi.com).
+- Guarda puntaje al finalizar.
 
-```bash
-ng generate --help
-```
+#### ❓ Preguntados (Los Simpson)
+- Juego de elección múltiple basado en personajes de Los Simpson.
+- Pregunta sobre quien es el personaje con imágenes y opciones.
+- Almacena puntaje con nombre de usuario.
 
-## Building
+#### 🔤 Ahorcado
+- Adiviná la palabra letra por letra.
+- Puntaje según intentos.
 
-To build the project run:
+#### 🟰 Juego Propio WORDLE
+-El juego consiste en adivinar la palabra.
+-Son 6 intentos y el juego va dando pistas de las posiciones de las letras.
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### 💬 Chat
+- Chat global en tiempo real usando Supabase Realtime.
+- Permite enviar y visualizar mensajes entre usuarios logueados.
 
-## Running unit tests
+---
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+### 📊 Encuestas
+- Encuestas de opinión sobre el juego creado.
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+### 🧾 Historial y Puntajes
+- Puntajes por juego y por usuario guardados en Supabase.
+- Visualización de resultados por usuario.
+- Filtro por tipo de juego.
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
