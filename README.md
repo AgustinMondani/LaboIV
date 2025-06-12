@@ -6,8 +6,7 @@ Bienvenido/a a **Sala de Juegos**, una aplicación desarrollada con Angular como
 
 ## 🚀 Tecnologías Utilizadas
 
-- **Angular** (v16+)
-- **Ionic Framework**
+- **Angular** (v19)
 - **Firebase** ( Hosting)
 - **Supabase** ( Auth, Storage)
 - **TypeScript / HTML / SCSS**
