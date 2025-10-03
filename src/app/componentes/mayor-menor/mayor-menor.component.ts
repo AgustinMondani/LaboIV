@@ -14,74 +14,78 @@ import { PuntuacionService } from '../../service/puntuacion.service';
   styleUrls: ['./mayor-menor.component.scss']
 })
 export class MayorMenorComponent implements OnInit {
-  username: any =null;
-  deckId: string = '';
-  currentCard: any = null;
-  nextCard: any = null;
-  score: number = 0;
-  remaining: number = 52;
-  result: string = '';
 
-  valoresOrden: string[] = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'JACK', 'QUEEN', 'KING', 'ACE'];
+  nombreUsuario: any = null;
+  idMazo: string = '';
+  cartaActual: any = null;
+  cartaSiguiente: any = null;
+  puntaje: number = 0;
+  cartasRestantes: number = 52;
+  mensajeResultado: string = '';
+  ordenValores: string[] = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'JACK', 'QUEEN', 'KING', 'ACE'];
 
-  constructor(private http: HttpClient, private router: Router, private supabase: AuthService, private puntuacionService: PuntuacionService) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private servicioAuth: AuthService,
+    private servicioPuntuacion: PuntuacionService
+  ) {}
 
-  async ngOnInit(){
-    this.username = await this.supabase.getSessionUser();
+  async ngOnInit() {
+    this.nombreUsuario = await this.servicioAuth.getSessionUser();
     this.iniciarJuego();
   }
 
   iniciarJuego() {
     this.http.get<any>('https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1')
       .subscribe(res => {
-        this.deckId = res.deck_id;
-        this.score = 0;
-        this.remaining = 52;
-        this.result = '';
-        this.drawInitialCard();
+        this.idMazo = res.deck_id;
+        this.puntaje = 0;
+        this.cartasRestantes = 52;
+        this.mensajeResultado = '';
+        this.sacarCartaInicial();
       });
   }
 
-  drawInitialCard() {
-    this.http.get<any>(`https://deckofcardsapi.com/api/deck/${this.deckId}/draw/?count=1`)
+  sacarCartaInicial() {
+    this.http.get<any>(`https://deckofcardsapi.com/api/deck/${this.idMazo}/draw/?count=1`)
       .subscribe(res => {
-        this.currentCard = res.cards[0];
-        this.remaining = res.remaining;
+        this.cartaActual = res.cards[0];
+        this.cartasRestantes = res.remaining;
       });
   }
 
-  async guess(higher: boolean) {
-    if (this.remaining === 0) {
+  async adivinar(esMayor: boolean) {
 
-    const usuario = await this.supabase.getSessionPuntaje();
-    const nombre = usuario?.user_metadata?.['username'] ?? 'Anónimo';
-    const email = usuario?.email ?? 'sin@email';
-    await this.puntuacionService.guardarPuntaje(nombre, email, 'Mayor menor', this.score);
+    if (this.cartasRestantes === 0) {
+      const usuario = await this.servicioAuth.getSessionPuntaje();
+      const nombre = usuario?.user_metadata?.['username'] ?? 'Anónimo';
+      const email = usuario?.email ?? 'sin@email';
 
-      this.result = '¡No quedan más cartas!';
+      await this.servicioPuntuacion.guardarPuntaje(nombre, email, 'Mayor menor', this.puntaje);
+      this.mensajeResultado = '¡No quedan más cartas!';
       return;
     }
 
-    this.http.get<any>(`https://deckofcardsapi.com/api/deck/${this.deckId}/draw/?count=1`)
+    this.http.get<any>(`https://deckofcardsapi.com/api/deck/${this.idMazo}/draw/?count=1`)
       .subscribe(res => {
-        this.nextCard = res.cards[0];
-        this.remaining = res.remaining;
+        this.cartaSiguiente = res.cards[0];
+        this.cartasRestantes = res.remaining;
 
-        const currentIndex = this.valoresOrden.indexOf(this.currentCard.value);
-        const nextIndex = this.valoresOrden.indexOf(this.nextCard.value);
+        const indiceActual = this.ordenValores.indexOf(this.cartaActual.value);
+        const indiceSiguiente = this.ordenValores.indexOf(this.cartaSiguiente.value);
 
-        const acertado = higher ? nextIndex > currentIndex : nextIndex < currentIndex;
+        const acierto = esMayor ? indiceSiguiente > indiceActual : indiceSiguiente < indiceActual;
 
-        if (acertado) {
-          this.score++;
-          this.result = '¡Correcto!';
+        if (acierto) {
+          this.puntaje++;
+          this.mensajeResultado = '¡Correcto!';
         } else {
-          this.result = 'Fallaste :(';
+          this.mensajeResultado = 'Fallaste :(';
         }
 
-        // Pasamos la carta nueva como actual
-        this.currentCard = this.nextCard;
-        this.nextCard = null;
+        this.cartaActual = this.cartaSiguiente;
+        this.cartaSiguiente = null;
       });
   }
 }

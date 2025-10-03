@@ -1,0 +1,1 @@
+import{d as a}from"./chunk-JJXCKLCD.js";import{a as n}from"./chunk-DT26ABWU.js";import{Q as t}from"./chunk-D3IEIHLI.js";import{h as e}from"./chunk-FK42CRUA.js";var p=()=>e(void 0,null,function*(){let r=t(n),o=t(a),{data:i}=yield r.client.auth.getSession();return i.session?!0:(o.navigate(["/login"]),!1)});export{p as a};

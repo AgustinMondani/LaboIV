@@ -40,11 +40,14 @@ export class PreguntadosComponent implements OnInit {
     this.indicePregunta = 0;
     this.seleccion = '';
     this.mensaje = '';
+    this.pregunta = null;
 
     this.preguntadosService.obtenerPreguntas(this.totalPreguntas).subscribe(
       preguntas => {
         this.preguntas = preguntas;
-        this.mostrarPreguntaActual();
+        if (this.preguntas.length > 0) {
+          this.mostrarPreguntaActual();
+        }
         this.cargando = false;
       },
       error => {
@@ -54,20 +57,13 @@ export class PreguntadosComponent implements OnInit {
     );
   }
 
-  async mostrarPreguntaActual() {
-    if (this.indicePregunta < this.totalPreguntas) {
+  mostrarPreguntaActual() {
+    if (this.indicePregunta < this.preguntas.length) {
       this.pregunta = this.preguntas[this.indicePregunta];
       this.seleccion = '';
       this.mensaje = '';
     } else {
-
-      const usuario = await this.supabase.getSessionPuntaje();
-      const nombre = usuario?.user_metadata?.['username'] ?? 'Anónimo';
-      const email = usuario?.email ?? 'sin@email';
-
-      await this.puntuacionService.guardarPuntaje(nombre, email, 'Preguntados', this.puntaje);
-
-      this.juegoFinalizado = true;
+      this.finalizarJuego();
     }
   }
 
@@ -87,12 +83,19 @@ export class PreguntadosComponent implements OnInit {
 
   siguiente(): void {
     if (!this.seleccion) return;
-
     this.indicePregunta++;
     this.mostrarPreguntaActual();
   }
 
   reiniciar(): void {
     this.iniciarJuego();
+  }
+
+  private async finalizarJuego() {
+    this.juegoFinalizado = true;
+    const usuario = await this.supabase.getSessionPuntaje();
+    const nombre = usuario?.user_metadata?.['username'] ?? 'Anónimo';
+    const email = usuario?.email ?? 'sin@email';
+    await this.puntuacionService.guardarPuntaje(nombre, email, 'Preguntados', this.puntaje);
   }
 }

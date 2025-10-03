@@ -1,0 +1,27 @@
+<h2 class="titulo">Batalla Naval</h2>
+
+<div class="tablero">
+  <div class="fila" *ngFor="let fila of tablero; let i = index">
+    <div
+      class="celda"
+      *ngFor="let celda of fila; let j = index"
+      [ngClass]="celda"
+      (click)="disparar(i,j)"
+    >
+      <ng-container *ngIf="celda === 'hit'">
+        <svg class="barco" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M2 44h60L32 12z"/>
+        </svg>
+      </ng-container>
+      <div *ngIf="celda === 'miss'" class="splash"></div>
+    </div>
+  </div>
+</div>
+
+<div class="info juego">
+  <p>Intentos restantes: {{ intentos }}</p>
+  <p>Aciertos: {{ aciertos }}/7</p>
+  <p class="mensaje">{{ mensaje }}</p>
+
+  <button *ngIf="juegoFinalizado" (click)="reiniciar()">Reiniciar</button>
+</div>

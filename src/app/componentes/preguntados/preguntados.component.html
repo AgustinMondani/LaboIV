@@ -1,37 +1,29 @@
-<h2 *ngIf="!cargando" class="titulo-juego">PREGUNTADOS</h2>
+<div class="contenedor-preguntados">
+  <h1 class="titulo-juego">Preguntados Disney</h1>
 
-<div class="contenedor-juego">
-
-  <div *ngIf="cargando">
-    <p class="titulo-juego">Cargando preguntas...</p>
+  <div *ngIf="cargando" class="cargando">
+    <p>Cargando preguntas...</p>
   </div>
 
-  <div *ngIf="!cargando && !juegoFinalizado && pregunta" class="seccion-juego">
-    
-    <img star [src]="pregunta.imagen" alt="Personaje" class="imagen-pregunta" />
-
-    <div class=" imagen-pregunta">
-      <p class="puntaje">Puntaje: {{ puntaje }} / {{ totalPreguntas }}</p>
+  <div *ngIf="!cargando && !juegoFinalizado">
+    <div class="pregunta">
+      <img [src]="pregunta?.imagen" alt="Imagen de la pregunta" class="imagen-pregunta" />
+      <p>{{ pregunta?.correcta }}</p>
+      <div class="opciones">
+        <button *ngFor="let opcion of pregunta?.opciones" (click)="elegir(opcion)">
+          {{ opcion }}
+        </button>
+      </div>
     </div>
-
-    <div class="opciones-grid">
-      <button *ngFor="let opcion of pregunta.opciones" class="boton-opcion" (click)="elegir(opcion)"
-        [disabled]="seleccion !== ''" [ngClass]="{
-          correcto: opcion === pregunta.correcta && seleccion !== '',
-          incorrecto: opcion === seleccion && opcion !== pregunta.correcta
-        }">
-        {{ opcion }}
-      </button>
+    <div *ngIf="seleccion">
+      <p>{{ mensaje }}</p>
+      <button (click)="siguiente()">Siguiente</button>
     </div>
-
-    <button class="boton boton-reiniciar" (click)="siguiente()" [disabled]="!seleccion">
-      Siguiente
-    </button>
   </div>
 
-  <div *ngIf="juegoFinalizado" class="seccion-juego">
-    <h2 class="resultado">Juego terminado</h2>
-    <p class="resultado">Respondiste {{ puntaje }} preguntas correctas de {{ totalPreguntas }}</p>
-    <button class="boton boton-reiniciar" (click)="reiniciar()">Jugar de nuevo</button>
+  <div *ngIf="juegoFinalizado">
+    <p>Juego finalizado</p>
+    <p>Puntaje final: {{ puntaje }}</p>
+    <button (click)="reiniciar()">Reiniciar</button>
   </div>
 </div>

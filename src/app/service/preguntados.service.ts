@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { Observable, of , switchMap} from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 export interface Pregunta {
   imagen: string;
@@ -9,124 +9,83 @@ export interface Pregunta {
   correcta: string;
 }
 
-
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class PreguntadosService {
-  private urlApi = 'https://thesimpsonsquoteapi.glitch.me/quotes?count=1';
-
-  // Lista estática de personajes conocidos en la API (podés agregar más si querés)
+  private apiUrl = 'https://disneyapi.dev/api/character/';
   private personajesDisponibles: string[] = [
-    'Homer Simpson', 'Marge Simpson', 'Bart Simpson', 'Lisa Simpson',
-    'Mr. Burns', 'Milhouse Van Houten', 'Ned Flanders', 'Krusty the Clown',
-    'Chief Wiggum', 'Ralph Wiggum', 'Moe Szyslak', 'Apu Nahasapeemapetilon'
+    'Mickey Mouse', 'Donald Duck', 'Goofy', 'Pluto', 'Minnie Mouse',
+    'Elsa', 'Anna', 'Olaf', 'Simba', 'Ariel', 'Belle', 'Aladdin'
   ];
-
   private usados: string[] = [];
 
   constructor(private http: HttpClient) {}
 
-  obtenerPregunta(): Observable<Pregunta | null> {
-  if (this.usados.length >= this.personajesDisponibles.length) {
-    return of(null); // Fin del juego
-  }
+  private obtenerPreguntaConReintento(intentos: number = 3): Observable<Pregunta | null> {
+    if (this.usados.length >= this.personajesDisponibles.length) {
+      return of(null); // Fin del juego
+    }
 
-  return this.http.get<any[]>(this.urlApi).pipe(
-    map(res => {
-      const item = res[0];
-      const personaje = item.character;
+    const restantes = this.personajesDisponibles.filter(p => !this.usados.includes(p));
+    const correcto = restantes[Math.floor(Math.random() * restantes.length)];
+    this.usados.push(correcto);
 
-      // Si el personaje no está en la lista permitida o ya fue usado, ignoramos este intento
-      if (
-        !this.personajesDisponibles.includes(personaje) ||
-        this.usados.includes(personaje)
-      ) {
-        return this.obtenerPregunta(); // 🔁 REINTENTAMOS
-      }
-
-      this.usados.push(personaje);
-
-      // Opciones incorrectas + la correcta
-      const distractoras = this.personajesDisponibles
-        .filter(p => p !== personaje)
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 3);
-
-      const opciones = [...distractoras, personaje].sort(() => Math.random() - 0.5);
-
-      return {
-        imagen: item.image,
-        opciones,
-        correcta: personaje
-      };
-    }),
-    // 🛠️ FLATTEN el observable anidado por el reintento
-    // 👇 Necesitamos convertirlo si devolvemos un observable dentro del map
-    switchMap(pregunta => {
-      if (pregunta instanceof Observable) {
-        return pregunta; // devolvemos el intento reintentado
-      }
-      return of(pregunta); // devolvemos la pregunta válida
-    })
-  );
-}
-
-
-obtenerPreguntas(cantidad: number = 6): Observable<Pregunta[]> {
-  this.reiniciarJuego();
-  const preguntas: Pregunta[] = [];
-  
-  const obtenerUnaPreguntaRecursiva = (): Observable<Pregunta> => {
-    return this.http.get<any[]>(this.urlApi).pipe(
+    return this.http.get<any[]>(`${this.apiUrl}?name=${encodeURIComponent(correcto)}`).pipe(
       switchMap(res => {
-        const item = res[0];
-        const personaje = item.character;
-
-        if (
-          !this.personajesDisponibles.includes(personaje) ||
-          this.usados.includes(personaje)
-        ) {
-          // Intentamos de nuevo si no es válido o ya usado
-          return obtenerUnaPreguntaRecursiva();
+        const personaje = res?.[0];
+        if (!personaje && intentos > 0) {
+          // Si no se obtiene un personaje, reintentar
+          return this.obtenerPreguntaConReintento(intentos - 1);
+        } else if (!personaje) {
+          // Si se agotaron los intentos, devolver null
+          return of(null);
         }
 
-        this.usados.push(personaje);
-
         const distractoras = this.personajesDisponibles
-          .filter(p => p !== personaje)
+          .filter(p => p !== correcto)
           .sort(() => Math.random() - 0.5)
           .slice(0, 3);
 
-        const opciones = [...distractoras, personaje].sort(() => Math.random() - 0.5);
+        const opciones = [...distractoras, correcto].sort(() => Math.random() - 0.5);
 
-        const pregunta: Pregunta = {
-          imagen: item.image,
+        return of({
+          imagen: personaje.imageUrl,
           opciones,
-          correcta: personaje
-        };
-
-        return of(pregunta);
+          correcta: correcto
+        });
       })
     );
-  };
+  }
 
-  return new Observable<Pregunta[]>(subscriber => {
-    const cargarSiguiente = () => {
-      if (preguntas.length >= cantidad) {
-        subscriber.next(preguntas);
-        subscriber.complete();
-        return;
-      }
+  obtenerPregunta(): Observable<Pregunta | null> {
+    return this.obtenerPreguntaConReintento();
+  }
 
-      obtenerUnaPreguntaRecursiva().subscribe(pregunta => {
-        preguntas.push(pregunta);
-        cargarSiguiente();
-      }, err => subscriber.error(err));
-    };
+  obtenerPreguntas(cantidad: number = 6): Observable<Pregunta[]> {
+    this.reiniciarJuego();
+    const preguntas: Pregunta[] = [];
 
-    cargarSiguiente();
-  });
-}
+    return new Observable<Pregunta[]>(subscriber => {
+      const cargarSiguiente = () => {
+        if (preguntas.length >= cantidad) {
+          subscriber.next(preguntas);
+          subscriber.complete();
+          return;
+        }
 
+        this.obtenerPregunta().subscribe(p => {
+          if (p) preguntas.push(p);
+          cargarSiguiente();
+        }, err => {
+          console.error('Error al obtener pregunta:', err);
+          cargarSiguiente(); // Continuar con la siguiente pregunta
+        });
+      };
+
+      cargarSiguiente();
+    });
+  }
 
   reiniciarJuego() {
     this.usados = [];

@@ -24,6 +24,11 @@ export const routes: Routes = [
         loadComponent: () =>
           import('../../componentes/wordle/wordle.component').then(m => m.WordleComponent),
       },
+      {
+        path: 'naval',
+        loadComponent: () =>
+          import('../../componentes/juegos/batalla-naval/batalla-naval.component').then(m => m.BatallaNavalComponent)
+      }
     ],
   },
 ];
