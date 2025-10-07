@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../service/auth.service';
+import { AuthService } from '../../../service/auth.service';
 import { Router } from '@angular/router';
-import { PuntuacionService } from '../../service/puntuacion.service';
+import { PuntuacionService } from '../../../service/puntuacion.service';
 
 @Component({
   selector: 'app-mayor-menor',
@@ -23,6 +23,8 @@ export class MayorMenorComponent implements OnInit {
   cartasRestantes: number = 52;
   mensajeResultado: string = '';
   ordenValores: string[] = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'JACK', 'QUEEN', 'KING', 'ACE'];
+
+  juegoFinalizado: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -43,6 +45,7 @@ export class MayorMenorComponent implements OnInit {
         this.puntaje = 0;
         this.cartasRestantes = 52;
         this.mensajeResultado = '';
+        this.juegoFinalizado = false;
         this.sacarCartaInicial();
       });
   }
@@ -56,26 +59,17 @@ export class MayorMenorComponent implements OnInit {
   }
 
   async adivinar(esMayor: boolean) {
-
-    if (this.cartasRestantes === 0) {
-      const usuario = await this.servicioAuth.getSessionPuntaje();
-      const nombre = usuario?.user_metadata?.['username'] ?? 'Anónimo';
-      const email = usuario?.email ?? 'sin@email';
-
-      await this.servicioPuntuacion.guardarPuntaje(nombre, email, 'Mayor menor', this.puntaje);
-      this.mensajeResultado = '¡No quedan más cartas!';
-      return;
-    }
+    if (this.juegoFinalizado) return;
 
     this.http.get<any>(`https://deckofcardsapi.com/api/deck/${this.idMazo}/draw/?count=1`)
-      .subscribe(res => {
+      .subscribe(async res => {
         this.cartaSiguiente = res.cards[0];
         this.cartasRestantes = res.remaining;
 
         const indiceActual = this.ordenValores.indexOf(this.cartaActual.value);
         const indiceSiguiente = this.ordenValores.indexOf(this.cartaSiguiente.value);
 
-        const acierto = esMayor ? indiceSiguiente > indiceActual : indiceSiguiente < indiceActual;
+        const acierto = esMayor ? indiceSiguiente >= indiceActual : indiceSiguiente <= indiceActual;
 
         if (acierto) {
           this.puntaje++;
@@ -86,6 +80,26 @@ export class MayorMenorComponent implements OnInit {
 
         this.cartaActual = this.cartaSiguiente;
         this.cartaSiguiente = null;
+
+        if (this.cartasRestantes === 0) {
+          await this.finalizarJuego();
+        }
       });
+  }
+
+  private async finalizarJuego() {
+    this.juegoFinalizado = true;
+
+    const usuario = await this.servicioAuth.getSessionPuntaje();
+    const nombre = usuario?.user_metadata?.['username'] ?? 'Anónimo';
+    const email = usuario?.email ?? 'sin@email';
+
+    try {
+      await this.servicioPuntuacion.guardarPuntaje(nombre, email, 'Mayor menor', this.puntaje);
+      this.mensajeResultado = `Juego terminado. Puntaje: ${this.puntaje}`;
+    } catch (error) {
+      this.mensajeResultado = 'Error al guardar el puntaje.';
+      console.error(error);
+    }
   }
 }

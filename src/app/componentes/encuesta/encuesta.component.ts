@@ -21,28 +21,26 @@ export class EncuestaComponent {
   constructor(private fb: FormBuilder, private supabaseService: AuthService) {
     this.encuestaForm = this.fb.group({
       nombre: ['', Validators.required],
-      edad: ['', [Validators.required, Validators.min(0), Validators.max(99)]],
+      edad: ['', [Validators.required, Validators.min(18), Validators.max(99)]],
+      telefono: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern('^[0-9]{10}$') // Solo números, 10 dígitos exactos
+        ]
+      ],
       gustoJuego: [],
       diversion: ['', Validators.required],
       dificultad: [5, [Validators.required, Validators.min(1), Validators.max(10)]],
     });
   }
 
-  get nombre() {
-    return this.encuestaForm.get('nombre');
-  }
-  get edad() {
-    return this.encuestaForm.get('edad');
-  }
-  get gustoJuego() {
-    return this.encuestaForm.get('gustoJuego');
-  }
-  get diversion() {
-    return this.encuestaForm.get('diversion');
-  }
-  get dificultad() {
-    return this.encuestaForm.get('dificultad');
-  }
+  get nombre() { return this.encuestaForm.get('nombre'); }
+  get edad() { return this.encuestaForm.get('edad'); }
+  get telefono() { return this.encuestaForm.get('telefono'); }
+  get gustoJuego() { return this.encuestaForm.get('gustoJuego'); }
+  get diversion() { return this.encuestaForm.get('diversion'); }
+  get dificultad() { return this.encuestaForm.get('dificultad'); }
 
   async enviar() {
     this.enviado = true;

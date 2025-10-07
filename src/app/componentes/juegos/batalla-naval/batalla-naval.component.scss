@@ -9,19 +9,21 @@
   padding: 2rem;
 }
 
+/* Título */
 .titulo {
   margin-top: 2rem;
-  font-size: 2rem;
+  font-size: 2.5rem;
   text-align: center;
   color: #00c6ff;
   text-shadow: 0 0 15px rgba(0, 198, 255, 0.7);
 }
 
+/* Tablero */
 .tablero {
   display: grid;
   grid-template-rows: repeat(6, 1fr);
   gap: 12px;
-  margin-top: 4rem;
+  margin-top: 3rem;
 }
 
 .fila {
@@ -41,38 +43,29 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-  &:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(0, 198, 255, 0.5);
-  }
-
-  &.hit {
-    background: linear-gradient(145deg, #ff416c, #ff4b2b);
-    animation: explode 0.4s ease-out;
-  }
-
-  &.miss {
-    background: linear-gradient(145deg, #00c6ff, #0072ff);
-    animation: splashAnim 0.5s ease-out;
-  }
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
 }
 
-/* Animación de explosión */
-@keyframes explode {
-  0% { transform: scale(0.5); opacity: 0.5; }
-  100% { transform: scale(1); opacity: 1; }
+.celda:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 198, 255, 0.5);
 }
 
-/* Animación splash */
-.splash {
-  width: 30px;
-  height: 30px;
-  background: rgba(0, 198, 255, 0.6);
-  border-radius: 50%;
-  position: absolute;
+/* Estado de la celda */
+.celda.hit {
+  background: linear-gradient(145deg, #ff416c, #ff4b2b);
+  animation: explode 0.4s ease-out;
+}
+
+.celda.miss {
+  background: linear-gradient(145deg, #00c6ff, #0072ff);
   animation: splashAnim 0.5s ease-out;
+}
+
+/* Animaciones */
+@keyframes explode {
+  0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
 }
 
 @keyframes splashAnim {
@@ -80,13 +73,13 @@
   100% { transform: scale(1.4); opacity: 0; }
 }
 
-/* SVG barco */
+/* Barco */
 .barco {
-  width: 35px;
-  height: 35px;
-  fill: #fff;
+  width: 50px;
+  height: 50px;
+  transition: transform 0.3s ease;
   filter: drop-shadow(0 0 5px rgba(0,198,255,0.7));
-  animation: barcoAnim 0.6s ease-out;
+  animation: barcoAnim 0.5s ease-out;
 }
 
 @keyframes barcoAnim {
@@ -94,6 +87,17 @@
   100% { transform: scale(1) rotate(0); opacity: 1; }
 }
 
+/* Distancia */
+.distancia {
+  position: absolute;
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(0,0,0,0.7);
+  pointer-events: none;
+}
+
+/* Info y barra de progreso */
 .info {
   margin-top: 2rem;
   text-align: center;
@@ -102,7 +106,30 @@
   text-shadow: 0 0 10px rgba(0, 198, 255, 0.7);
 }
 
+.barra-progreso {
+  width: 100%;
+  height: 12px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 6px;
+  margin: 1rem 0;
+  display: flex;
+}
+
+.aciertos {
+  height: 100%;
+  background: linear-gradient(90deg, #28a745, #218838);
+  transition: width 0.3s ease;
+}
+
+.intentos {
+  height: 100%;
+  background: linear-gradient(90deg, #dc3545, #c82333);
+  transition: width 0.3s ease;
+}
+
+/* Botón */
 .juego button {
+  margin-top: 20px;
   align-self: center;
   background: #00ffae;
   color: #000;

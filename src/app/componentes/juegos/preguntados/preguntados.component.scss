@@ -1,0 +1,174 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 94vh;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #fff;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.contenedor-juego {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  margin: 0 auto;
+  max-width: 500px;
+  width: 100%;
+  height: auto;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: fadeIn 0.5s ease;
+  box-sizing: border-box;
+}
+
+.titulo-juego {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  margin-bottom: 0.5rem;
+  text-align: center;
+  color: #00c6ff;
+  text-shadow: 0 0 10px rgba(0, 198, 255, 0.6);
+  letter-spacing: 2px;
+}
+
+.imagen-personaje {
+  display: block;
+  margin: 0 auto 1rem auto;
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  border-radius: 1rem;
+  box-shadow: 0 0 40px rgba(1, 198, 255, 0.8);
+  border: 3px solid rgba(0, 198, 255, 0.4);
+  transition: transform 0.3s ease;
+}
+
+button {
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 198, 255, 0.4);
+  color: #fff;
+  background: linear-gradient(145deg, #00c6ff, #0072ff);
+  width: 100%;
+  margin: 0.4rem 0;
+  box-sizing: border-box;
+}
+
+button:hover {
+  background: linear-gradient(145deg, #009ee0, #0055aa);
+  transform: scale(1.05);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.opciones {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.opciones button {
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  border-radius: 0.8rem;
+  padding: 0.7rem;
+  background: none;
+  backdrop-filter: blur(8px);
+  border: 2px solid rgba(0, 198, 255, 0.3);
+  color: #fff;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.opciones button:not(:disabled):hover {
+  background: rgba(0,198,255,0.2);
+  transform: scale(1.05);
+}
+
+.correcto {
+  background: linear-gradient(145deg, #28a745, #218838) !important;
+  box-shadow: 0 0 15px rgba(40, 167, 69, 0.7);
+}
+
+.incorrecto {
+  background: linear-gradient(145deg, #dc3545, #c82333) !important;
+  box-shadow: 0 0 15px rgba(220, 53, 69, 0.7);
+}
+
+.timer,
+.puntaje {
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  font-weight: bold;
+  text-align: center;
+  min-width: 120px;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+}
+
+.timer {
+  color: #ffcc00;
+  text-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
+}
+
+.puntaje {
+  color: #00ffae;
+  text-shadow: 0 0 10px rgba(0, 255, 174, 0.7);
+}
+
+.pantalla-final {
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+}
+
+.pantalla-final h3 {
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  margin-bottom: 1rem;
+  color: #ff5555;
+  text-shadow: 0 0 12px rgba(255, 85, 85, 0.8);
+}
+
+.pantalla-final p {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 400px) {
+  .contenedor-juego {
+    padding: 1rem;
+  }
+
+  .imagen-personaje {
+    max-width: 220px;
+  }
+
+  .opciones button {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+}

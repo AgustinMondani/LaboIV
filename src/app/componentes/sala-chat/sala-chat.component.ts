@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, NgZone, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
-import { NgZone } from '@angular/core';
 
 @Component({
   selector: 'app-sala-chat',
@@ -12,7 +11,7 @@ import { NgZone } from '@angular/core';
   templateUrl: './sala-chat.component.html',
   styleUrls: ['./sala-chat.component.scss']
 })
-export class SalaChatComponent implements OnInit, OnDestroy {
+export class SalaChatComponent implements OnInit, OnDestroy, AfterViewInit {
   messages: any[] = [];
   messageText: string = '';
   username: string = '';
@@ -23,13 +22,15 @@ export class SalaChatComponent implements OnInit, OnDestroy {
   constructor(
     private supabase: AuthService,
     private router: Router,
-     private zone: NgZone
+    private zone: NgZone,
+    private cdr: ChangeDetectorRef
   ) {}
 
-  async ngOnInit() {
-    this.username = await this.supabase.getSessionUser();
-    this.loadMessages();
-    this.setupRealtimeSubscription();
+  ngOnInit() {
+    this.initChat();
+  }
+
+  ngAfterViewInit() {
     this.scrollToBottom();
   }
 
@@ -37,6 +38,12 @@ export class SalaChatComponent implements OnInit, OnDestroy {
     if (this.messageChannel) {
       this.messageChannel.unsubscribe();
     }
+  }
+
+  private async initChat() {
+    this.username = await this.supabase.getSessionUser();
+    await this.loadMessages();
+    this.setupRealtimeSubscription();
   }
 
   private async loadMessages() {
@@ -51,27 +58,27 @@ export class SalaChatComponent implements OnInit, OnDestroy {
     }
 
     this.messages = data ?? [];
+    this.cdr.detectChanges();
     this.scrollToBottom();
   }
 
   private setupRealtimeSubscription() {
     this.messageChannel = this.supabase.client
-  .channel('public:messages')
-  .on(
-    'postgres_changes',
-    { event: 'INSERT', schema: 'public', table: 'messages' },
-    payload => {
-      this.zone.run(() => {
-        this.messages = [...this.messages, payload.new];
-        this.scrollToBottom();
+      .channel('public:messages')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'messages' },
+        payload => {
+          this.zone.run(() => {
+            this.messages.push(payload.new);
+            this.cdr.detectChanges();
+            this.scrollToBottom();
+          });
+        }
+      )
+      .subscribe(status => {
+        if (status === 'SUBSCRIBED') console.log('Suscripción a mensajes activa');
       });
-    }
-  )
-  .subscribe(status => {
-    if (status === 'SUBSCRIBED') {
-      console.log('Suscripción a mensajes activa');
-    }
-  });
   }
 
   async sendMessage() {
@@ -90,22 +97,19 @@ export class SalaChatComponent implements OnInit, OnDestroy {
         user_email: this.username,
       });
 
-     this.loadMessages();
-
     if (error) {
       console.error('Error enviando mensaje:', error);
       alert('Hubo un error al enviar el mensaje.');
       return;
     }
+
     this.messageText = '';
   }
 
   private scrollToBottom() {
-    setTimeout(() => {
-      if (this.chatContainer?.nativeElement) {
-        this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
-      }
-    }, 100);
+    if (!this.chatContainer) return;
+    const container = this.chatContainer.nativeElement;
+    container.scrollTop = container.scrollHeight;
   }
 
   logout() {
@@ -114,8 +118,7 @@ export class SalaChatComponent implements OnInit, OnDestroy {
       .catch(err => console.error('Error al cerrar sesión:', err));
   }
 
-  backHome(){
-    this.router.navigate(['/home'])
+  backHome() {
+    this.router.navigate(['/home']);
   }
-
 }

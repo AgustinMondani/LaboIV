@@ -27,7 +27,7 @@ export const routes: Routes = [
   {
     path: 'juegos',
     loadChildren: () =>
-      import('./modulos/juegos/juegos-routing.module').then(m => m.routes),
+      import('./componentes/juegos/juegos-routing.module').then(m => m.routes),
     canActivate: [AuthGuard]
   },
   {

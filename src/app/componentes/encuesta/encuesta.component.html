@@ -1,5 +1,5 @@
 <div class="encuesta-container">
-    <h1 class="titulo">Encuesta</h1>
+  <h1 class="titulo">Encuesta</h1>
 </div>
 
 <div *ngIf="mensaje" class="mensaje" [ngClass]="{ 'error': esError, 'exito': !esError }">
@@ -16,18 +16,21 @@
     </div>
 
     <label>Edad</label>
-    <input type="number" formControlName="edad" min="0" max="99" />
+    <input type="number" formControlName="edad" min="18" max="99" />
     <div *ngIf="edad?.invalid && edad?.touched" class="error">
-      La edad debe ser entre 0 y 99.
+      La edad debe ser entre 18 y 99.
+    </div>
+
+    <label>Teléfono</label>
+    <input type="text" formControlName="telefono" maxlength="10" placeholder="Ej: 1123456789" />
+    <div *ngIf="telefono?.invalid && telefono?.touched" class="error">
+      El teléfono debe tener exactamente 10 números.
     </div>
 
     <label>
       <input type="checkbox" formControlName="gustoJuego" />
       ¿Te gustó el juego creado?
     </label>
-    <div *ngIf="gustoJuego?.invalid && gustoJuego?.touched" class="error">
-      Esta respuesta es obligatoria.
-    </div>
 
     <label>¿Qué tan divertido te pareció?</label>
     <select formControlName="diversion">
@@ -36,9 +39,6 @@
       <option value="no esta mal">No está mal</option>
       <option value="muy divertido">Muy divertido</option>
     </select>
-    <div *ngIf="diversion?.invalid && diversion?.touched" class="error">
-      Por favor elegí una opción.
-    </div>
 
     <label>Dificultad del juego (1 - 10)</label>
     <input

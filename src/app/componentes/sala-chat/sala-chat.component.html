@@ -1,16 +1,13 @@
 <div class="chat-container">
   <h2>Sala de Chat</h2>
 
-  <div class="chat-messages">
-    <div
-      *ngFor="let msg of messages"
-      [class.own-message]="msg.user_email === username"
-      class="message"
-    >
-      <strong>{{ msg.user_email }}</strong>: {{ msg.text }}
-      <span class="timestamp">{{ msg.created_at | date: 'dd/MM/yyyy HH:mm' }}</span>
-    </div>
+  <div class="chat-messages" #chatContainer>
+  <div *ngFor="let msg of messages" [class.own-message]="msg.user_email === username" class="message">
+    <strong>{{ msg.user_email }}</strong>: {{ msg.text }}
+    <span class="timestamp">{{ msg.created_at | date: 'dd/MM/yyyy HH:mm' }}</span>
   </div>
+</div>
+
 
   <form (submit)="sendMessage(); $event.preventDefault()">
     <input

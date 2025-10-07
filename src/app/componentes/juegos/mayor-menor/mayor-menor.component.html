@@ -1,12 +1,10 @@
 <div class="contenedor-juego">
     <h2 class="titulo-juego">Mayor o Menor</h2>
 
-    <!-- Mostramos el juego solo si hay una carta actual -->
     <div *ngIf="cartaActual" class="seccion-juego">
         <img [src]="cartaActual.image" alt="Carta actual" class="imagen-carta">
 
         <div class="botonera">
-            <!-- Botones para adivinar si la próxima carta es mayor o menor -->
             <button (click)="adivinar(true)" class="boton boton-mayor">MAYOR</button>
             <button (click)="adivinar(false)" class="boton boton-menor">MENOR</button>
         </div>
@@ -16,6 +14,5 @@
         <p class="resultado">{{ mensajeResultado }}</p>
     </div>
 
-    <!-- Botón para reiniciar el juego -->
     <button (click)="iniciarJuego()" class="boton boton-reiniciar">REINICIAR</button>
 </div>

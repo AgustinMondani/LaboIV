@@ -1,0 +1,35 @@
+<div class="contenedor-juego contenedor-preguntados">
+  <h2 class="titulo-juego">Preguntados</h2>
+  <h2 class="titulo-juego">Rick and Morty</h2>
+
+  <div *ngIf="!juegoIniciado && !juegoTerminado" class="pantalla-inicio">
+    <button (click)="comenzarJuego()">COMENZAR</button>
+  </div>
+
+  <div *ngIf="juegoIniciado && !juegoTerminado" class="pantalla-juego">
+    <p class="timer">⏱ Tiempo restante: {{ tiempoRestante }}s</p>
+    <p class="puntaje">Puntaje: {{ puntaje }}</p>
+
+    <div *ngIf="personajeCorrecto" class="contenedor-imagen">
+      <img [src]="personajeCorrecto.image" alt="Personaje" class="imagen-personaje">
+
+      <div class="opciones">
+        <button *ngFor="let opcion of opciones"
+                (click)="seleccionarOpcion(opcion)"
+                [disabled]="opcionSeleccionada !== null"
+                [class.correcto]="opcionSeleccionada && opcion === opcionCorrecta"
+                [class.incorrecto]="opcionSeleccionada === opcion && opcion !== opcionCorrecta">
+          {{ opcion }}
+        </button>
+      </div>
+    </div>
+
+    <p class="mensaje">{{ mensaje }}</p>
+  </div>
+
+  <div *ngIf="juegoTerminado" class="pantalla-final">
+    <h3>⏱ Tiempo terminado</h3>
+    <p>Puntaje final: <strong>{{ puntaje }}</strong></p>
+    <button (click)="reiniciarJuego()">REINICIAR</button>
+  </div>
+</div>
