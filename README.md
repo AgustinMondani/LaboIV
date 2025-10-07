@@ -1,59 +1,58 @@
-# SalaDeJuegos
+# Sala de Juegos - Agustín Mondani
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.9.
+Este repositorio contiene mi proyecto **Sala de Juegos**, una aplicación web desarrollada como parte de la Tecnicatura Universitaria en Programación en la UTN. La app combina distintos juegos, login con Supabase, almacenamiento de resultados y componentes.
+---
 
-## Development server
+## 🔹 Contenido del proyecto
 
-To start a local development server, run:
+La web incluye:
 
-```bash
-ng serve
-```
+1. **Sistema de Autenticación**
+   - Registro e inicio de sesión con **Supabase**.
+   - Mensajes emergentes para indicar login exitoso.
+   - Logout y navegación segura mediante `AuthGuard`.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+2. **Sala de Chat**
+   - Chat en tiempo real usando **Supabase**.
+   - Suscripción a nuevos mensajes para actualización automática.
+   - Mensajes limitados a 50 caracteres.
+   - Scroll automático al final del chat.
+   - Diferenciación visual entre mensajes propios y de otros usuarios.
 
-## Code scaffolding
+3. **Juegos incluidos**
+   - **Ahorcado**
+   - **Mayor o Menor**
+   - **Preguntados**
+   - **Batalla Naval** *(mi juego propio)*
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+---
 
-```bash
-ng generate component component-name
-```
+## 🔹 Mi juego propio: Batalla Naval
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+**Batalla Naval** es un juego estratégico de tablero en el que el jugador debe encontrar y hundir **7 barcos** escondidos en un tablero de 6x6.  
 
-```bash
-ng generate --help
-```
+### Mecánicas principales:
+- El jugador tiene **8 intentos** para encontrar todos los barcos.
+- Cada casilla puede contener:
+  - Un barco (**hit**) si se acierta.
+  - Agua (**miss**) si se falla, mostrando un **número** que indica la distancia más corta hasta el barco más cercano.
+- La pista numérica permite planificar la estrategia para los siguientes movimientos.
+- La interfaz incluye animaciones visuales de barcos, explosiones y splashes.
+- Al finalizar el juego, se calcula un puntaje basado en aciertos e intentos restantes.
+- El puntaje se guarda automáticamente en la base de datos mediante **Supabase** y un servicio de puntuaciones.
 
-## Building
+🎯 Objetivo: Hundir los 7 barcos antes de quedarte sin intentos.
 
-To build the project run:
+---
 
-```bash
-ng build
-```
+## 🔹 Tecnologías utilizadas
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- **Frontend:** Angular (v17) y SCSS para estilos.
+- **Autenticación y datos:** Supabase
+- **Host** Firebase
+- **Gestión de rutas y seguridad:** Angular Router + `AuthGuard`.
 
-## Running unit tests
+---
+<img width="534" height="496" alt="image" src="https://github.com/user-attachments/assets/ae3052c8-302d-4441-9d2d-baf28e3312d5" />
+<img width="1916" height="892" alt="image" src="https://github.com/user-attachments/assets/2bd7578d-c817-4b21-ac09-50bb83c801d2" />
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
